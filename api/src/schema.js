@@ -14,6 +14,10 @@ const typeDefs = gql`
     name: String!
     type: String!
   }
+
+  type Query {
+    pets: [Pet]!
+  }
 `;
 
 module.exports = typeDefs
