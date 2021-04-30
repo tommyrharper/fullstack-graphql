@@ -5,6 +5,9 @@ const { ApolloServer } = require('apollo-server');
 const typeDefs = gql`
   # Single line comment
 
+
+  union Footwear = Sneaker | Boot
+
   """
   Multi line comment shows up with ShoeType docs
   """
@@ -95,7 +98,13 @@ const resolvers = {
       if (shoe.sport) return 'Sneaker'
       return 'Boot'
     }
-  }
+  },
+  Footwear: {
+    __resolveType(shoe) {
+      if (shoe.sport) return 'Sneaker'
+      return 'Boot'
+    }
+  },
 }
 
 const server = new ApolloServer({
