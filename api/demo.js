@@ -5,9 +5,6 @@ const { ApolloServer } = require('apollo-server');
 const typeDefs = gql`
   # Single line comment
 
-
-  union Footwear = Sneaker | Boot
-
   """
   Multi line comment shows up with ShoeType docs
   """
@@ -21,23 +18,27 @@ const typeDefs = gql`
     email: String!
     avatar: String
     friends: [User]!
+    shoes: [Shoe]!
   }
 
   interface Shoe {
     brand: ShoeType!
     size: Int!
+    user: User!
   }
 
   type Sneaker implements Shoe {
     brand: ShoeType!
     size: Int!
     sport: String!
+    user: User!
   }
 
   type Boot implements Shoe {
     brand: ShoeType!
     size: Int!
     hasGrip: Boolean!
+    user: User!
   }
 
   input ShoeInput {
@@ -60,21 +61,26 @@ const typeDefs = gql`
     newShoe(input: NewShoeInput!): Shoe!
   }
 `
+const user = {
+  id: 1,
+  email: 'yoda@masters.com',
+  avatar: 'http://yoda.png',
+  friends: [],
+  shoes: []
+};
+
+const shoes = [
+  {brand: 'NIKE', size: 12, sport: 'basketball', user: 1},
+  {brand: 'TIMBERLAND', size: 14, hasGrip: true, user: 1},
+];
 
 const resolvers = {
   Query: {
     shoes(_, {input}) {
-      return [
-        {brand: 'NIKE', size: 12, sport: 'basketball'},
-        {brand: 'TIMBERLAND', size: 14, hasGrip: true},
-      ]
+      return shoes
     },
     me() {
-      return {
-        email: 'yoda@masters.com',
-        avatar: 'http://yoda.png',
-        friends: []
-      }
+      return user
     },
     friends() {
       return [{
@@ -93,18 +99,27 @@ const resolvers = {
       return input
     }
   },
+  User: {
+    shoes() {
+      return shoes
+    }
+  },
   Shoe: {
     __resolveType(shoe) {
       if (shoe.sport) return 'Sneaker'
       return 'Boot'
     }
   },
-  Footwear: {
-    __resolveType(shoe) {
-      if (shoe.sport) return 'Sneaker'
-      return 'Boot'
+  Sneaker: {
+    user(shoe) {
+      return user
     }
   },
+  Boot: {
+    user(shoe) {
+      return user
+    }
+  }
 }
 
 const server = new ApolloServer({
