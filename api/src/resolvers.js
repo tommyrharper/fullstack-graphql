@@ -11,6 +11,7 @@ module.exports = {
       // return [{ id: 1, name: 'moose' }, { id: 2, name: 'garfield' }]
     },
     pet(_, {input}, ctx) {
+      console.log('Query => pet')
       return ctx.models.Pet.findOne(input)
     }
   },
@@ -20,13 +21,22 @@ module.exports = {
     }
   },
   Pet: {
+    owner(pet, _, ctx) {
+      console.log('PET => owner')
+      return ctx.models.User.findOne()
+      // return ctx.models.User.findById(pet.user)
+    },
     // img(pet) {
     //   return pet.type === 'DOG'
     //     ? 'https://placedog.net/300/300'
     //     : 'http://placekitten.com/300/300'
     // }
   },
-  // User: {
-    
-  // }
+  User: {
+    pets(user, _, ctx) {
+      console.log('USER => pets')
+      return ctx.models.Pet.findMany({})
+      // return ctx.models.Pet.findMany({ user: user.id })
+    }
+  }
 }

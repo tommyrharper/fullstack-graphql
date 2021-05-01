@@ -8,43 +8,50 @@
       "id": "1",
       "createdAt": "2345234",
       "name": "Tom",
-      "type": "Cow"
+      "type": "Cow",
+      "user": "jBWMVGjm50l6LGwepDoty"
     },
     {
       "id": "2",
       "createdAt": "2345245",
       "name": "James",
-      "type": "Cat"
+      "type": "Cat",
+      "user": "jBWMVGjm50l6LGwepDoty"
     },
     {
       "id": "3",
       "createdAt": "2234543",
       "name": "Ian",
-      "type": "Dog"
+      "type": "Dog",
+      "user": "jBWMVGjm50l6LGwepDoty"
     },
     {
       "id": "4",
       "createdAt": "2234543",
       "name": "Ian",
-      "type": "Cat"
+      "type": "Cat",
+      "user": "jBWMVGjm50l6LGwepDoty"
     },
     {
       "id": "avFHfwWHrIoYvmhchkcPr",
       "createdAt": 1619430643716,
       "name": "Tom",
-      "type": "Dog"
+      "type": "Dog",
+      "user": "jBWMVGjm50l6LGwepDoty"
     },
     {
       "id": "wKPAuLQICdqTJsUlWu8i0",
       "createdAt": 1619430887998,
       "name": "Tom",
-      "type": "Dog"
+      "type": "Dog",
+      "user": "jBWMVGjm50l6LGwepDoty"
     },
     {
       "id": "aogGMQoaStM-h0PCQ4WNz",
       "createdAt": 1619430909117,
       "name": "Tom",
-      "type": "Dog"
+      "type": "Dog",
+      "user": "jBWMVGjm50l6LGwepDoty"
     }
   ]
 }
