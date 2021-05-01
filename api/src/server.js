@@ -6,7 +6,10 @@ const {models, db} = require('./db')
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context() {
+  context({req}) {
+    // lock down the whole server
+    const jwt = req.headers.authorization
+    if (jwt) throw new Error('not authenticated')
     const user = models.User.findOne()
     return { models, db, user }
   }
