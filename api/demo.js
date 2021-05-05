@@ -77,6 +77,7 @@ const shoes = [
 const resolvers = {
   Query: {
     shoes(_, {input}) {
+      if (input.brand) return shoes.filter(shoe => shoe.brand === input.brand)
       return shoes
     },
     me() {
