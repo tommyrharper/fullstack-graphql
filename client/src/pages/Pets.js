@@ -5,22 +5,24 @@ import PetsList from '../components/PetsList'
 import NewPetModal from '../components/NewPetModal'
 import Loader from '../components/Loader'
 
-const query = gql`
+const GET_PETS = gql`
   query GetPets {
     pets {
       id
       name
       type
+      img
     }
   }
 `
 
-const mutation = gql`
+const ADD_PET = gql`
   mutation AddPet($input: NewPetInput!) {
     addPet(input: $input) {
       id
       name
       type
+      img
     }
   }
 `
@@ -28,14 +30,29 @@ const mutation = gql`
 
 export default function Pets () {
   const [modal, setModal] = useState(false)
-  const { data, loading, error } = useQuery(query)
-  const [addPet, { mutationLoading, mutationError }] = useMutation(mutation)
+  const { data, loading, error } = useQuery(GET_PETS)
+  const [addPet, newPet] = useMutation(
+    ADD_PET,
+    {
+      update(cache, { data: { addPet } }) {
+        const { pets } = cache.readQuery({ query: GET_PETS })
+        cache.writeQuery({
+          query: GET_PETS,
+          data: { pets: [addPet, ...pets] }
+        })
+      }
+    }
+  )
 
   const onSubmit = input => {
     console.log(`input`, input)
     addPet({ variables: { input }})
     setModal(false)
   }
+
+  if (loading || newPet.loading) return <Loader />
+
+  if (error || newPet.error) return <span>Error</span>
   
   if (modal) {
     return <NewPetModal onSubmit={onSubmit} onCancel={() => setModal(false)} />
@@ -56,7 +73,6 @@ export default function Pets () {
       </section>
       <section>
         { !loading && !error && <PetsList pets={data.pets} /> }
-        {/* <PetsList /> */}
       </section>
     </div>
   )
