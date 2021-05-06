@@ -12,6 +12,10 @@ const GET_PETS = gql`
       name
       type
       img
+      owner {
+        id
+        age @client
+      }
     }
   }
 `
@@ -23,6 +27,10 @@ const ADD_PET = gql`
       name
       type
       img
+      owner {
+        id
+        age @client
+      }
     }
   }
 `
@@ -55,7 +63,11 @@ export default function Pets () {
           id: Math.floor(Math.random() * 1000) + '',
           name: input.name,
           type: input.type,
-          img: 'https://via.placeholder.com/300'
+          img: 'https://via.placeholder.com/300',
+          owner: {
+            id: '',
+            age: 35
+          }
         }
       }
     })
@@ -69,6 +81,9 @@ export default function Pets () {
   if (modal) {
     return <NewPetModal onSubmit={onSubmit} onCancel={() => setModal(false)} />
   }
+
+  console.log(`data.pets`, data.pets)
+
 
   return (
     <div className="page pets-page">
