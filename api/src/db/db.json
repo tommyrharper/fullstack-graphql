@@ -3,5 +3,27 @@
     "id": "jBWMVGjm50l6LGwepDoty",
     "username": "frontendmaster"
   },
-  "pet": []
+  "pet": [
+    {
+      "id": "2l3krjhwelkfhaiewua",
+      "type": "CAT",
+      "img": "img.jpg",
+      "name": "Tom",
+      "createdAt": 1241234
+    },
+    {
+      "id": "9mzUSlFLb3RdzF-jgFC9Z",
+      "createdAt": 1620240831537,
+      "name": "James",
+      "type": "DOG",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "ruF5fMAZUpnsfiq0U18CY",
+      "createdAt": 1620240997686,
+      "name": "Alfie",
+      "type": "DOG",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    }
+  ]
 }

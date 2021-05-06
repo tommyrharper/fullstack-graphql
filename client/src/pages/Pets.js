@@ -5,12 +5,35 @@ import PetsList from '../components/PetsList'
 import NewPetModal from '../components/NewPetModal'
 import Loader from '../components/Loader'
 
+const query = gql`
+  query GetPets {
+    pets {
+      id
+      name
+      type
+    }
+  }
+`
+
+const mutation = gql`
+  mutation AddPet($input: NewPetInput!) {
+    addPet(input: $input) {
+      id
+      name
+      type
+    }
+  }
+`
+
 
 export default function Pets () {
   const [modal, setModal] = useState(false)
-
+  const { data, loading, error } = useQuery(query)
+  const [addPet, { mutationLoading, mutationError }] = useMutation(mutation)
 
   const onSubmit = input => {
+    console.log(`input`, input)
+    addPet({ variables: { input }})
     setModal(false)
   }
   
@@ -32,7 +55,8 @@ export default function Pets () {
         </div>
       </section>
       <section>
-        <PetsList />
+        { !loading && !error && <PetsList pets={data.pets} /> }
+        {/* <PetsList /> */}
       </section>
     </div>
   )
