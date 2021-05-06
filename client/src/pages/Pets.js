@@ -46,11 +46,23 @@ export default function Pets () {
 
   const onSubmit = input => {
     console.log(`input`, input)
-    addPet({ variables: { input }})
+    addPet({
+      variables: { input },
+      optimisticResponse: {
+        __typename: "Mutation",
+        addPet: {
+          __typename: "Pet",
+          id: Math.floor(Math.random() * 1000) + '',
+          name: input.name,
+          type: input.type,
+          img: 'https://via.placeholder.com/300'
+        }
+      }
+    })
     setModal(false)
   }
 
-  if (loading || newPet.loading) return <Loader />
+  if (loading) return <Loader />
 
   if (error || newPet.error) return <span>Error</span>
   
