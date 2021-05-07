@@ -5,34 +5,35 @@ import PetsList from '../components/PetsList'
 import NewPetModal from '../components/NewPetModal'
 import Loader from '../components/Loader'
 
+const PETS_FIELDS = gql`
+  fragment PetsFields on Pet {
+    id
+    name
+    type
+    img
+    owner {
+      id
+      age @client
+    }
+  }
+`
+
 const GET_PETS = gql`
   query GetPets {
     pets {
-      id
-      name
-      type
-      img
-      owner {
-        id
-        age @client
-      }
+      ...PetsFields
     }
   }
+  ${PETS_FIELDS}
 `
 
 const ADD_PET = gql`
   mutation AddPet($input: NewPetInput!) {
     addPet(input: $input) {
-      id
-      name
-      type
-      img
-      owner {
-        id
-        age @client
-      }
+      ...PetsFields
     }
   }
+  ${PETS_FIELDS}
 `
 
 
@@ -88,7 +89,7 @@ export default function Pets () {
   return (
     <div className="page pets-page">
       <section>
-        <div className="row betwee-xs middle-xs">
+        <div className="row between-xs middle-xs">
           <div className="col-xs-10">
             <h1>Pets</h1>
           </div>
