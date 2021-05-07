@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import gql from 'graphql-tag'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
 import PetsList from '../components/PetsList'
 import NewPetModal from '../components/NewPetModal'
 import Loader from '../components/Loader'
-import { atom, Provider, useAtom } from "jotai";
-import { petsAtom } from '../components/App';
+import atomiQL from '../hooks/atomiQL';
+
 
 const PETS_FIELDS = gql`
   fragment PetsFields on Pet {
@@ -42,18 +42,8 @@ const ADD_PET = gql`
 
 export default function Pets () {
   const [modal, setModal] = useState(false)
-  const { data, loading, error } = useQuery(GET_PETS)
-  const [pets, setPets] = useAtom(petsAtom)
   const renderCount = React.useRef(0);
-  const atomUpdated = React.useRef(false)
-
-  React.useEffect(() => {
-    renderCount.current = renderCount.current + 1;
-    if (!loading && data.pets && !atomUpdated.current) {
-      atomUpdated.current = true;
-      setPets(data.pets);
-    }
-  }, [data]);
+  const { data, loading, error } = atomiQL(GET_PETS);
 
   const [addPet, newPet] = useMutation(
     ADD_PET,
@@ -117,7 +107,7 @@ export default function Pets () {
         </div>
       </section>
       <section>
-        { !loading && !error && <PetsList pets={pets} /> }
+        { !loading && !error && <PetsList pets={data.pets} /> }
       </section>
     </div>
   )
