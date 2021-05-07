@@ -25,3 +25,8 @@ yarn app
 ```
 yarn server
 ```
+Install jotai
+```
+yarn add jotai
+```
+
