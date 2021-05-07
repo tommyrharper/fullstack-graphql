@@ -4,6 +4,8 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import PetsList from '../components/PetsList'
 import NewPetModal from '../components/NewPetModal'
 import Loader from '../components/Loader'
+import { atom, Provider, useAtom } from "jotai";
+import { petsAtom } from '../components/App';
 
 const PETS_FIELDS = gql`
   fragment PetsFields on Pet {
@@ -41,6 +43,18 @@ const ADD_PET = gql`
 export default function Pets () {
   const [modal, setModal] = useState(false)
   const { data, loading, error } = useQuery(GET_PETS)
+  const [pets, setPets] = useAtom(petsAtom)
+  const renderCount = React.useRef(0);
+  const atomUpdated = React.useRef(false)
+
+  React.useEffect(() => {
+    renderCount.current = renderCount.current + 1;
+    if (!loading && data.pets && !atomUpdated.current) {
+      atomUpdated.current = true;
+      setPets(data.pets);
+    }
+  }, [data]);
+
   const [addPet, newPet] = useMutation(
     ADD_PET,
     {
@@ -53,6 +67,7 @@ export default function Pets () {
       }
     }
   )
+
 
   const onSubmit = input => {
     console.log(`input`, input)
@@ -93,7 +108,7 @@ export default function Pets () {
       <section>
         <div className="row between-xs middle-xs">
           <div className="col-xs-10">
-            <h1>Pets</h1>
+            <h1>Pets<span> Render Count: {renderCount.current}</span></h1>
           </div>
 
           <div className="col-xs-2">
@@ -102,7 +117,7 @@ export default function Pets () {
         </div>
       </section>
       <section>
-        { !loading && !error && <PetsList pets={data.pets} /> }
+        { !loading && !error && <PetsList pets={pets} /> }
       </section>
     </div>
   )
