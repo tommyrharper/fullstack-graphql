@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import gql from 'graphql-tag'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import PetsList from '../components/PetsList'
 import NewPetModal from '../components/NewPetModal'
 import Loader from '../components/Loader'
@@ -44,6 +44,16 @@ export default function Pets () {
   const [modal, setModal] = useState(false)
   const renderCount = React.useRef(0);
   const { data, loading, error } = atomiQL(GET_PETS);
+  // const { data, loading, error } = useQuery(GET_PETS);
+
+
+  useEffect(() => {
+    // console.log('------------ inside useEffect -----------')
+    // console.log(`data`, data)
+    // console.log(`loading`, loading)
+    // console.log(`error`, error)
+    renderCount.current = renderCount.current + 1;
+  });
 
   const [addPet, newPet] = useMutation(
     ADD_PET,
@@ -90,7 +100,7 @@ export default function Pets () {
     return <NewPetModal onSubmit={onSubmit} onCancel={() => setModal(false)} />
   }
 
-  console.log(`data.pets`, data.pets)
+  // console.log(`data.pets`, data.pets)
 
 
   return (
@@ -98,7 +108,8 @@ export default function Pets () {
       <section>
         <div className="row between-xs middle-xs">
           <div className="col-xs-10">
-            <h1>Pets<span> Render Count: {renderCount.current}</span></h1>
+            <h1>Pets</h1>
+            {/* <span> Render Count: {renderCount.current}</span> */}
           </div>
 
           <div className="col-xs-2">
